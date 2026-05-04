@@ -14,8 +14,16 @@ def build_graph(resume_agent, job_agent, skill_agent, coach_agent):
     graph.add_node("coach", coach_agent.run)
 
     graph.set_entry_point("resume")
+    
+    graph.add_conditional_edges(
+        "resume",
+        check_resume_quality,
+        {
+            "retry": "resume",
+            "next": "job"
+        }
+    )
 
-    graph.add_edge("resume", "job")
     graph.add_edge("job", "skill")
     graph.add_edge("skill", "coach")
 
