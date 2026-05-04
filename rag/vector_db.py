@@ -13,3 +13,21 @@ class VectorDB:
     def search(self, query_emb, k=3):
         D, I = self.index.search(query_emb, k)
         return [self.texts[i] for i in I[0]]
+
+
+# 전처리 함수
+def preprocess_text(text: str):
+    lines = text.split("\n")
+
+    cleaned = []
+    for line in lines:
+        line = line.strip()
+        if len(line) > 5:
+            cleaned.append(line)
+
+    return list(set(cleaned))
+
+
+# RAG 검색 함수
+def retrieve_context(vector_db, query_emb, k=3):
+    return vector_db.search(query_emb, k)
